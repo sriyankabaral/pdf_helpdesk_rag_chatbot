@@ -1,97 +1,198 @@
 # PDF Helpdesk RAG Chatbot
 
-A local desktop-style Python chatbot that answers questions from `data/rag_practice_knowledge_base.pdf` using a Retrieval-Augmented Generation pipeline with the free Gemini API.
+A local Python-based Retrieval-Augmented Generation chatbot that answers questions from a PDF knowledge base. The project demonstrates a basic RAG workflow using PDF loading, text chunking, embeddings, vector storage, retrieval, chat history handling, and response generation with Gemini and LangChain.
 
-Run `app.py` and a window opens on your computer. This is not deployed or hosted.
+This project was created as part of my Generative AI learning journey to understand how document question-answering systems work internally.
+
+---
+
+## Features
+
+* Load a PDF document as a knowledge base
+* Split PDF content into smaller overlapping chunks
+* Generate embeddings for document chunks
+* Store embeddings in a local Chroma vector database
+* Retrieve relevant chunks based on user questions
+* Use chat history to handle follow-up questions
+* Generate answers using retrieved PDF context
+* Local desktop-style GUI using Python
+* Option to rebuild the vector database when needed
+
+---
+
+## Tech Stack
+
+* Python
+* LangChain
+* Gemini API
+* ChromaDB
+* PyPDFLoader
+* RecursiveCharacterTextSplitter
+* Tkinter
+* dotenv
+
+---
+
+## Project Pipeline
+
+```text
+PDF document
+    |
+Load PDF pages
+    |
+Split text into chunks
+    |
+Generate embeddings
+    |
+Store embeddings in Chroma vector database
+    |
+User asks a question
+    |
+Convert follow-up question into standalone question
+    |
+Retrieve relevant chunks from vector database
+    |
+Send question + retrieved context to LLM
+    |
+Generate answer based on PDF content
+    |
+Store question and answer in chat history
+```
+
+---
 
 ## Project Structure
 
 ```text
-pdf-helpdesk-rag-chatbot/
-|-- data/
-|   `-- rag_practice_knowledge_base.pdf
-|-- app.py
-|-- requirements.txt
-|-- .env
-|-- .gitignore
-`-- README.md
+pdf_helpdesk_rag_chatbot/
+│
+├── data/
+│   └── rag_practice_knowledge_base.pdf
+│
+├── app.py
+├── requirements.txt
+├── .env.example
+├── .gitignore
+└── README.md
 ```
 
-## Pipeline
+---
 
-```text
-PDF file
- |
-Load PDF
- |
-Split PDF into chunks
- |
-Create embeddings for each chunk
- |
-Store chunks in vector database
- |
-User asks question
- |
-Use chat history + question to create standalone question
- |
-Retriever searches vector database
- |
-Retriever returns top relevant chunks
- |
-LLM reads question + chunks
- |
-LLM gives final answer
- |
-Save question and answer in chat history
+## Setup Instructions
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/sriyankabaral/pdf_helpdesk_rag_chatbot.git
+cd pdf_helpdesk_rag_chatbot
 ```
 
-## Setup
+### 2. Create a virtual environment
 
-1. Create and activate a virtual environment.
+For Windows:
 
 ```bash
 python -m venv venv
 venv\Scripts\activate
 ```
 
-2. Install dependencies.
+For macOS/Linux:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Add your Gemini API key and model to `.env`.
+### 4. Create a `.env` file
+
+Create a `.env` file in the project root and add:
 
 ```env
 GOOGLE_API_KEY=your_google_api_key_here
-GEMINI_MODEL=gemini-3.5-flash
+GEMINI_MODEL=your_gemini_model_here
 ```
 
-4. Open the local interface.
+Do not upload your real API key to GitHub.
+
+### 5. Run the app
 
 ```bash
 python app.py
 ```
 
-The window includes these tabs:
-
-- Conversation: ask questions and see answers.
-- Database: view the PDF path and rebuild the vector database.
-- Chat History: view or clear the current chat session.
-- Configure: view the active Gemini configuration.
-
-If you change embedding models or need to recreate the vector database, run:
+To rebuild the vector database:
 
 ```bash
 python app.py --rebuild
 ```
 
+---
+
 ## How It Works
 
-- `PyPDFLoader` loads the PDF pages.
-- `RecursiveCharacterTextSplitter` splits the PDF into overlapping text chunks.
-- `GoogleGenerativeAIEmbeddings` creates Gemini embeddings for the chunks using `models/gemini-embedding-001`.
-- `Chroma` stores and searches the embedded chunks.
-- A history-aware retriever rewrites follow-up questions into standalone questions.
-- `ChatGoogleGenerativeAI` answers using the retrieved PDF context with `gemini-3.5-flash` by default.
-- A Python list stores question and answer chat history during the GUI session.
+The chatbot first loads the PDF document and splits it into chunks. Each chunk is converted into an embedding and stored in a Chroma vector database. When the user asks a question, the retriever searches for the most relevant chunks. The language model then uses only the retrieved context to generate an answer.
+
+The project also includes a history-aware retriever, which helps convert follow-up questions into standalone questions before retrieval.
+
+---
+
+## Example Use Cases
+
+This type of chatbot can be useful for:
+
+* Company policy document question answering
+* Student handbook chatbot
+* Course material assistant
+* FAQ chatbot
+* Internal helpdesk document assistant
+* Research paper or report question answering
+
+---
+
+## What I Learned
+
+Through this project, I practiced:
+
+* Building a basic RAG pipeline
+* Loading and processing PDF documents
+* Creating embeddings
+* Using vector databases for semantic search
+* Connecting retrieval with an LLM
+* Handling chat history in a simple chatbot
+* Building a local Python GUI application
+
+---
+
+## Limitations
+
+* The chatbot currently works with one PDF file at a time
+* The interface is local and not deployed online
+* Chat history is stored only during the current app session
+* The project is mainly for learning and portfolio demonstration
+* More testing is needed for large documents and multiple file uploads
+
+---
+
+## Future Improvements
+
+* Add support for multiple PDF uploads
+* Add Streamlit or FastAPI version
+* Store chat history persistently
+* Show retrieved source chunks in the answer
+* Add better error handling
+* Add unit tests
+* Improve project structure by separating UI, RAG pipeline, and configuration files
+
+---
+
+## Author
+
+Sriyanka Baral
+Recent BE graduate in Electronics, Communication and Information Technology
+Interested in AI/ML, Computer Vision, Medical Image Analysis, and Generative AI applications
