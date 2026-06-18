@@ -8,16 +8,14 @@ This project was created as part of my Generative AI learning journey to underst
 
 ## Features
 
-* Load a PDF document as a knowledge base
-* Split PDF content into smaller overlapping chunks
-* Generate embeddings for document chunks
-* Store embeddings in a local Chroma vector database
-* Retrieve relevant chunks based on user questions
-* Use chat history to handle follow-up questions
-* Generate answers using retrieved PDF context
-* Local desktop-style GUI using Python
-* Option to rebuild the vector database when needed
-
+- Load a PDF document as a knowledge base
+- Split PDF content into smaller chunks
+- Generate embeddings using Gemini embeddings
+- Store and search document chunks using ChromaDB
+- Retrieve relevant context for each question
+- Generate answers using Gemini
+- Handle follow-up questions using chat history
+- Run locally with a simple Python GUI
 ---
 
 ## Tech Stack
